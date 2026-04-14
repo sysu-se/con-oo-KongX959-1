@@ -1,25 +1,25 @@
 <script>
-	import { onMount } from 'svelte';
-	import { validateSencode } from '@sudoku/sencode';
-	import game from '@sudoku/game';
-	import { modal } from '@sudoku/stores/modal';
-	import { gameWon } from '@sudoku/stores/game';
-	import Board from './components/Board/index.svelte';
-	import Controls from './components/Controls/index.svelte';
-	import Header from './components/Header/index.svelte';
-	import Modal from './components/Modal/index.svelte';
+	import { onMount } from "svelte";
+	import { validateSencode } from "@sudoku/sencode";
+	import * as gameStore from "@sudoku/stores/game";
+	import { modal } from "@sudoku/stores/modal";
+	import { gameWon } from "@sudoku/stores/game";
+	import Board from "./components/Board/index.svelte";
+	import Controls from "./components/Controls/index.svelte";
+	import Header from "./components/Header/index.svelte";
+	import Modal from "./components/Modal/index.svelte";
 
-	gameWon.subscribe(won => {
+	gameWon.subscribe((won) => {
 		if (won) {
-			game.pause();
-			modal.show('gameover');
+			gameStore.pause();
+			modal.show("gameover");
 		}
 	});
 
 	onMount(() => {
 		let hash = location.hash;
 
-		if (hash.startsWith('#')) {
+		if (hash.startsWith("#")) {
 			hash = hash.slice(1);
 		}
 
@@ -28,7 +28,7 @@
 			sencode = hash;
 		}
 
-		modal.show('welcome', { onHide: game.resume, sencode });
+		modal.show("welcome", { onHide: gameStore.resume, sencode });
 	});
 </script>
 

@@ -1,8 +1,8 @@
 <script>
-	import Candidates from './Candidates.svelte';
-	import { fade } from 'svelte/transition';
-	import { SUDOKU_SIZE } from '@sudoku/constants';
-	import { cursor } from '@sudoku/stores/cursor';
+	import Candidates from "./Candidates.svelte";
+	import { fade } from "svelte/transition";
+	import { SUDOKU_SIZE } from "@sudoku/constants";
+	import { cursor } from "@sudoku/stores/cursor";
 
 	export let value;
 	export let cellX;
@@ -16,37 +16,41 @@
 	export let sameArea;
 	export let sameNumber;
 
-	const borderRight = (cellX !== SUDOKU_SIZE && cellX % 3 !== 0);
-	const borderRightBold = (cellX !== SUDOKU_SIZE && cellX % 3 === 0);
-	const borderBottom = (cellY !== SUDOKU_SIZE && cellY % 3 !== 0);
-	const borderBottomBold = (cellY !== SUDOKU_SIZE && cellY % 3 === 0);
+	const borderRight = cellX !== SUDOKU_SIZE && cellX % 3 !== 0;
+	const borderRightBold = cellX !== SUDOKU_SIZE && cellX % 3 === 0;
+	const borderBottom = cellY !== SUDOKU_SIZE && cellY % 3 !== 0;
+	const borderBottomBold = cellY !== SUDOKU_SIZE && cellY % 3 === 0;
+
+	function handleClick() {
+		cursor.set(cellX - 1, cellY - 1);
+	}
 </script>
 
-<div class="cell row-start-{cellY} col-start-{cellX}"
-     class:border-r={borderRight}
-     class:border-r-4={borderRightBold}
-     class:border-b={borderBottom}
-     class:border-b-4={borderBottomBold}>
-
+<div
+	class="cell row-start-{cellY} col-start-{cellX}"
+	class:border-r={borderRight}
+	class:border-r-4={borderRightBold}
+	class:border-b={borderBottom}
+	class:border-b-4={borderBottomBold}
+>
 	{#if !disabled}
-		<div class="cell-inner"
-		     class:user-number={userNumber}
-		     class:selected={selected}
-		     class:same-area={sameArea}
-		     class:same-number={sameNumber}
-		     class:conflicting-number={conflictingNumber}>
-
-			<button class="cell-btn" on:click={cursor.set(cellX - 1, cellY - 1)}>
+		<div
+			class="cell-inner"
+			class:user-number={userNumber}
+			class:selected
+			class:same-area={sameArea}
+			class:same-number={sameNumber}
+			class:conflicting-number={conflictingNumber}
+		>
+			<button class="cell-btn" on:click={handleClick}>
 				{#if candidates}
 					<Candidates {candidates} />
 				{:else}
-					<span class="cell-text">{value || ''}</span>
+					<span class="cell-text">{value || ""}</span>
 				{/if}
 			</button>
-
 		</div>
 	{/if}
-
 </div>
 
 <style>

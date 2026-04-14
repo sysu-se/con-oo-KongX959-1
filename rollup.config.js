@@ -12,7 +12,7 @@ const mode = process.env.NODE_ENV;
 const production = mode === 'production';
 
 const preprocess = sveltePreprocess({
-	postcss:  {
+	postcss: {
 		plugins: [
 			require('postcss-import'),
 			require('tailwindcss'),
@@ -26,12 +26,12 @@ const preprocess = sveltePreprocess({
 });
 
 export default {
-	input:   'src/main.js',
-	output:  {
-		file:      'dist/bundle.js',
+	input: 'src/main.js',
+	output: {
+		file: 'dist/bundle.js',
 		sourcemap: !production,
-		name:      'app',
-		format:    'iife',
+		name: 'app',
+		format: 'iife',
 	},
 	plugins: [
 		copy({
@@ -70,7 +70,24 @@ export default {
 		// https://github.com/rollup/plugins/tree/master/packages/commonjs
 		resolve({
 			browser: true,
-			dedupe:  ['svelte'],
+			dedupe: ['svelte'],
+			alias: {
+				'@sudoku/domain': './src/domain/index.js',
+				'@sudoku/game': './src/lib/game.js',
+				'@sudoku/constants': './src/lib/constants.js',
+				'@sudoku/sencode': './src/lib/sencode.js',
+				'@sudoku/stores/game': './src/lib/stores/game.js',
+				'@sudoku/stores/modal': './src/lib/stores/modal.js',
+				'@sudoku/stores/cursor': './src/lib/stores/cursor.js',
+				'@sudoku/stores/candidates': './src/lib/stores/candidates.js',
+				'@sudoku/stores/timer': './src/lib/stores/timer.js',
+				'@sudoku/stores/grid': './src/lib/stores/grid.js',
+				'@sudoku/stores/hints': './src/lib/stores/hints.js',
+				'@sudoku/stores/notes': './src/lib/stores/notes.js',
+				'@sudoku/stores/settings': './src/lib/stores/settings.js',
+				'@sudoku/stores/keyboard': './src/lib/stores/keyboard.js',
+				'@sudoku/stores/difficulty': './src/lib/stores/difficulty.js',
+			},
 		}),
 		commonjs(),
 
@@ -88,7 +105,7 @@ export default {
 		// instead of npm run dev), minify
 		production && terser(),
 	],
-	watch:   {
+	watch: {
 		clearScreen: false,
 	},
 };
